@@ -4,15 +4,13 @@
 
 ```shell
 brew tap connor-27/homebrew-submodule-kit
-brew install git-alias
-
-git-alias-set
+brew install fgit
 ```
 일반적인 경우 위에 절차로 진행하면 이슈 없이 install 및 사용 가능
 
 만약에 install 과정 중 에러 내용이 아래와 같다면
 ```shell
-==> Installing git-alias from connor-27/submodule-kit
+==> Installing fgit from connor-27/submodule-kit
 Error: Your Command Line Tools are too outdated.
 Update them from Software Update in System Settings.
 
@@ -40,7 +38,7 @@ xcode-select --install
 ## 정상적인 설치가 안될 경우
 이유는 잘 모르겠지만.. Uninstall 과 Untab 이 잘 안됌
 ```shell
-brew uninstall git-alias
+brew uninstall fgit
 brew untap connor-27/homebrew-submodule-kit
 ```
 ----
@@ -49,8 +47,8 @@ brew untap connor-27/homebrew-submodule-kit
 
 ### 1) 포뮬러 강제 삭제
 ```shell
-rm -rf /usr/local/Cellar/git-alias
-rm -rf /opt/homebrew/Cellar/git-alias
+rm -rf /usr/local/Cellar/fgit
+rm -rf /opt/homebrew/Cellar/fgit
 ```
 
 ### 2) Tab 강제 삭제
@@ -68,10 +66,5 @@ brew doctor
 ### 4) Tab 재설치
 ```shell
 brew tap connor-27/homebrew-submodule-kit
-brew install git-alias
-```
-
-### 5) 실행
-```shell
-git-alias-set
+brew install fgit
 ```
