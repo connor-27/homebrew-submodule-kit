@@ -12,6 +12,8 @@
 # 함수에 대한 설명을 출력
 function help() {
   echo "사용 가능한 명령어:"
+  echo "  fgit add <repo_url>      - 서브모듈을 추가해주는 명령어"
+  echo "  fgit reset [submodule]   - 서브모듈을 지우고 다시 추가해주는 명령어 ( 서브모듈 main 브랜치로 )"
   echo "  fgit clone <repo_url>    - 서브모듈이 있는 저장소를 클론하고 서브모듈을 main 브랜치로 체크아웃 후 최신 상태로 업데이트"
   echo "  fgit branch [submodule]  - 서브모듈의 브랜치 정보를 조회"
   echo "  fgit checkout <branch> [submodule] - 서브모듈을 지정한 브랜치로 체크아웃하고 업데이트"
@@ -20,6 +22,8 @@ function help() {
   echo "  fgit hist                - git 로그 그래프 심플 버전"
 }
 #####################################################
+# - add
+# - reset
 # - clone
 # - branch
 # - checkout
@@ -27,6 +31,34 @@ function help() {
 # - hists
 # - hist
 #####################################################
+
+# 워킹레포지토리에 서브모듈 추가
+function add() {
+  repo_url=$1
+  git submodule add "$repo_url" &&
+  submodule_name=$(awk '/path/ {print $3}' .gitmodules) &&
+  echo "submodule name = $submodule_name" &&
+  cd "$submodule_name" &&
+  git checkout main &&
+  git pull &&
+  cd .. &&
+  git add .
+}
+
+#####################################################
+
+# 서브모듈을 지우고 다시 추가해주는 명령어
+function reset() {
+  repo_url=$1
+  submodule_name=${1:-$(awk '/path/ {print $3}' .gitmodules)}
+  git submodule deinit -f submodule_name &&
+  rm -rf .git/modules/submodule_name &&
+  git rm -f submodule_name &&
+  add "$repo_url"
+}
+
+#####################################################
+
 # git submodule One Command
 # 서브모듈이 있는 Working Repository 를 clone 하면서
 # 서브모듈을 Detatched HEAD 상태가 아닌 main branch 상태로 변경하고
@@ -90,7 +122,11 @@ function hist() {
 
 #####################################################
 #####################################################
-if [[ $1 == "clone" ]]; then
+if [[ $1 == "add" ]]; then
+  add "$2"
+elif [[ $1 == "reset" ]]; then
+  reset "$2" "$3"
+elif [[ $1 == "clone" ]]; then
   clone "$2"
 elif [[ $1 == "branch" ]]; then
   branch "$2"
