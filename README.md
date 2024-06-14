@@ -2,6 +2,10 @@
 
 ## 사용법
 
+brew info fgit
+brew update
+brew upgrade --cask
+
 ```shell
 brew tap connor-27/homebrew-submodule-kit
 brew install fgit
@@ -36,10 +40,31 @@ xcode-select --install
 -----
 
 ## 정상적인 설치가 안될 경우
-이유는 잘 모르겠지만.. Uninstall 과 Untab 이 잘 안됌
+
 ```shell
 brew uninstall fgit
 brew untap connor-27/homebrew-submodule-kit
+```
+
+-----
+
+## 버전 변경에 따른 재설치
+
+```shell
+brew info fgit
+brew uninstall fgit
+# 만약에 uninstall 이 잘 안될 경우~ 
+# brew update
+# brew upgrade --cask
+# doctor 를 통해서 현재 brew 의 문제점들을 명령창에 나오는데로 해결해나감
+# brew doctor 
+brew info fgit
+brew untap connor-27/homebrew-submodule-kit
+
+# 재설치
+brew tap connor-27/homebrew-submodule-kit
+brew install fgit
+
 ```
 ----
 
