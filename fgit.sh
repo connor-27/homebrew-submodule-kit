@@ -50,10 +50,10 @@ function add() {
 # 서브모듈을 지우고 다시 추가해주는 명령어
 function reset() {
   repo_url=$1
-  submodule_name=${1:-$(awk '/path/ {print $3}' .gitmodules)}
-  git submodule deinit -f submodule_name &&
-  rm -rf .git/modules/submodule_name &&
-  git rm -f submodule_name &&
+  submodule_name=$(basename "$repo_url" .git)
+  git submodule deinit -f "$submodule_name" &&
+  rm -rf ".git/modules/$submodule_name" &&
+  git rm -f "$submodule_name" &&
   add "$repo_url"
 }
 
