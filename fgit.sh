@@ -13,6 +13,7 @@
 function help() {
   echo "사용 가능한 명령어:"
   echo "  fgit add <repo_url>      - 서브모듈을 추가해주는 명령어"
+  echo "  fgit remove              - 서브모듈을 삭제해주는 명령어"
   echo "  fgit reset [submodule]   - 서브모듈을 지우고 다시 추가해주는 명령어 ( 서브모듈 main 브랜치로 )"
   echo "  fgit clone <repo_url>    - 서브모듈이 있는 저장소를 클론하고 서브모듈을 main 브랜치로 체크아웃 후 최신 상태로 업데이트"
   echo "  fgit branch [submodule]  - 서브모듈의 브랜치 정보를 조회"
@@ -23,6 +24,7 @@ function help() {
 }
 #####################################################
 # - add
+# - remove
 # - reset
 # - clone
 # - branch
@@ -47,13 +49,23 @@ function add() {
 
 #####################################################
 
+# 워킹레포지토리에 서브모듈 삭제
+function remove() {
+  submodule_name=$(basename "$repo_url" .git)
+  git submodule deinit -f "$submodule_name" &&
+  rm -rf ".git/modules/$submodule_name" &&
+  git rm -f "$submodule_name"
+}
+
+#####################################################
+
 # 서브모듈을 지우고 다시 추가해주는 명령어
 function reset() {
   repo_url=$1
-  submodule_name=${1:-$(awk '/path/ {print $3}' .gitmodules)}
-  git submodule deinit -f submodule_name &&
-  rm -rf .git/modules/submodule_name &&
-  git rm -f submodule_name &&
+  submodule_name=$(basename "$repo_url" .git)
+  git submodule deinit -f "$submodule_name" &&
+  rm -rf ".git/modules/$submodule_name" &&
+  git rm -f "$submodule_name" &&
   add "$repo_url"
 }
 
