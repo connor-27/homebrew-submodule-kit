@@ -51,7 +51,7 @@ function add() {
 
 # 워킹레포지토리에 서브모듈 삭제
 function remove() {
-  submodule_name=$(basename "$repo_url" .git)
+  submodule_name=${1:-$(awk '/path/ {print $3}' .gitmodules)}
   git submodule deinit -f "$submodule_name" &&
   rm -rf ".git/modules/$submodule_name" &&
   git rm -f "$submodule_name"
@@ -136,6 +136,8 @@ function hist() {
 #####################################################
 if [[ $1 == "add" ]]; then
   add "$2"
+elif [[ $1 == "remove" ]]; then
+  remove "$2"
 elif [[ $1 == "reset" ]]; then
   reset "$2" "$3"
 elif [[ $1 == "clone" ]]; then
