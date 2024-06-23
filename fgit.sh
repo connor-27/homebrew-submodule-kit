@@ -14,7 +14,7 @@ function help() {
   echo "사용 가능한 명령어:"
   echo "  fgit add <repo_url>      - 서브모듈을 추가해주는 명령어"
   echo "  fgit remove              - 서브모듈을 삭제해주는 명령어"
-  echo "  fgit reset [submodule]   - 서브모듈을 지우고 다시 추가해주는 명령어 ( 서브모듈 main 브랜치로 )"
+  echo "  fgit reset [repo_url]    - 서브모듈을 지우고 다시 추가해주는 명령어 ( 서브모듈 main 브랜치로 )"
   echo "  fgit clone <repo_url>    - 서브모듈이 있는 저장소를 클론하고 서브모듈을 main 브랜치로 체크아웃 후 최신 상태로 업데이트"
   echo "  fgit branch [submodule]  - 서브모듈의 브랜치 정보를 조회"
   echo "  fgit checkout <branch> [submodule] - 서브모듈을 지정한 브랜치로 체크아웃하고 업데이트"
