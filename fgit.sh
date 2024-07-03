@@ -100,8 +100,8 @@ function branch() {
 #####################################################
 # 서브모듈을 원하는 브랜치로 checkout
 function checkout() {
-  submodule_name=${1:-$(awk '/path/ {print $3}' .gitmodules)}
-  branch_name=$2
+  branch_name=$1
+  submodule_name=${2:-$(awk '/path/ {print $3}' .gitmodules)}
   if [ -z "$branch_name" ]; then
     echo '브랜치 이름을 제공해야 합니다.'
     exit 1
