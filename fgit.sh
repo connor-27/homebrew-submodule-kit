@@ -12,15 +12,16 @@
 # 함수에 대한 설명을 출력
 function help() {
   echo "사용 가능한 명령어:"
-  echo "  fgit add <repo_url>      - 서브모듈을 추가해주는 명령어"
-  echo "  fgit remove              - 서브모듈을 삭제해주는 명령어"
-  echo "  fgit reset [repo_url]    - 서브모듈을 지우고 다시 추가해주는 명령어 ( 서브모듈 main 브랜치로 )"
-  echo "  fgit clone <repo_url>    - 서브모듈이 있는 저장소를 클론하고 서브모듈을 main 브랜치로 체크아웃 후 최신 상태로 업데이트"
-  echo "  fgit branch [submodule]  - 서브모듈의 브랜치 정보를 조회"
-  echo "  fgit checkout <branch> [submodule] - 서브모듈을 지정한 브랜치로 체크아웃하고 업데이트"
-  echo "  fgit update [submodule]  - 서브모듈을 최신 상태로 업데이트"
-  echo "  fgit hists               - git 로그 그래프를 모두 표시 (트리 보기)"
-  echo "  fgit hist                - git 로그 그래프 심플 버전"
+  echo "  fgit add <repo_url>                   - 서브모듈을 추가해주는 명령어"
+  echo "  fgit remove                           - 서브모듈을 삭제해주는 명령어"
+  echo "  fgit reset [repo_url]                 - 서브모듈을 지우고 다시 추가해주는 명령어 ( 서브모듈 main 브랜치로 )"
+  echo "  fgit clone <repo_url>                 - 서브모듈이 있는 저장소를 클론하고 서브모듈을 main 브랜치로 체크아웃 후 최신 상태로 업데이트"
+  echo "  fgit branch [submodule]               - 서브모듈의 브랜치 정보를 조회"
+  echo "  fgit checkout <branch> [submodule]    - 서브모듈을 지정한 브랜치로 체크아웃하고 업데이트"
+  echo "  fgit update [submodule]               - 서브모듈을 최신 상태로 업데이트"
+  echo "  fgit force-update [submodule]         - 서브모듈을 강제로 최신 상태로 업데이트 (rebase 및 autostash 사용)"
+  echo "  fgit hists                            - git 로그 그래프를 모두 표시 (트리 보기)"
+  echo "  fgit hist                             - git 로그 그래프 심플 버전"
 }
 #####################################################
 # - add
@@ -121,6 +122,14 @@ function update() {
 }
 
 #####################################################
+# 서브모듈을 강제 업데이트 한 후 git staged 상태로 변경 (add)
+function force_update() {
+  submodule_name=${1:-$(awk '/path/ {print $3}' .gitmodules)}
+  cd "$submodule_name" && git pull --rebase --autostash
+  cd .. && git add "$submodule_name"
+}
+
+#####################################################
 # git 그래프 모두 표시 (tree 보기)
 function hists() {
   git log --oneline --graph --all --decorate
@@ -148,6 +157,8 @@ elif [[ $1 == "checkout" ]]; then
   checkout "$2" "$3"
 elif [[ $1 == "update" ]]; then
   update "$2"
+elif [[ $1 == "force-update" ]]; then
+  force_update "$2"
 elif [[ $1 == "hists" ]]; then
   hists
 elif [[ $1 == "hist" ]]; then
